@@ -92,6 +92,7 @@ void messageHandler()
 	}else if((position = string_contains((char*)buffer, "SET_LED_RGB:", buffer_index)) != -1)
 	{
 		uint8_t red, green, blue;
+		buffer[position + 23] = 0;//add null to the end of the message
 		red = atoi((char*)&buffer[position + 12]);
 		green = atoi((char*)&buffer[position + 16]);
 		blue = atoi((char*)&buffer[position + 20]);

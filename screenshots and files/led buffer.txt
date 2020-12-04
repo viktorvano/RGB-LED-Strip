@@ -1,0 +1,15 @@
+Name : buffer
+	Details:"2,CONNECT\r\n\r\n+IPD,2,25:\0\027SET_LED_RGB:183,102,029\0,CLOSED\r\n", '\0' <repeats 1941 times>
+	Default:0x20000284 <buffer>
+	Decimal:536871556
+	Hex:0x20000284
+	Binary:100000000000000000001010000100
+	Octal:04000001204
+
+Name : buffer
+	Details:"0,CONNECT\r\n\r\n+IPD,0,456:GET / HTTP/1.1\r\nHost: 192.168.2.239\r\nConnection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nUser-Agent: Mozilla/5.0 (Linux; Android 10; S5 Pro) AppleWebKit/537.36 (KHTML, like G"...
+	Default:0x20000284 <buffer>
+	Decimal:536871556
+	Hex:0x20000284
+	Binary:100000000000000000001010000100
+	Octal:04000001204
