@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">LED Strip</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="text_for_button">SET</string>
+    <string name="text_for_text_view">SET_LED_RGB:000,000,000</string>
+</resources>
