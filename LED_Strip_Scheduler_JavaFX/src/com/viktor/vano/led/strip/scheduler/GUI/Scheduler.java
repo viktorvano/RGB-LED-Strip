@@ -6,18 +6,13 @@ import com.viktor.vano.led.strip.scheduler.Classes.GradientListRGB;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -34,14 +29,8 @@ public class Scheduler extends Application {
 
     private XYChart.Series<Number, Number> redSeries, greenSeries, blueSeries, presentSeries;
     private Timeline timelineUpdateData;
-    private final BorderPane borderPane = new BorderPane();
     private final StackPane stackPaneCenter = new StackPane();
-    private final VBox vBoxRight = new VBox();
-    private final HBox hBoxBottom = new HBox();
     private LineChart<Number,Number> lightChart;
-    private Label labelCurrentStatus;
-    private Slider sliderInvestmentDrop;
-    private float investment = 0.0f, currencyDropThreshold = 0.0f;
     private int currentTime;
     private GradientListRGB gradientListRGB;
     private int phoneAbsence = 0;
@@ -57,17 +46,9 @@ public class Scheduler extends Application {
         final int width = 1200;
         final int height = 750;
 
-        //borderPane.setBottom(hBoxBottom);
-        borderPane.setCenter(stackPaneCenter);
-        borderPane.setRight(vBoxRight);
-
-        hBoxBottom.setPadding(new Insets(15, 50, 15, 50));
-        hBoxBottom.setSpacing(30);
-        hBoxBottom.setStyle("-fx-background-color: #336699;");
-
         initializeLayout();
 
-        Scene scene = new Scene(borderPane, width, height);
+        Scene scene = new Scene(stackPaneCenter, width, height);
 
         stage.setTitle("LED Strip Scheduler");
         stage.setScene(scene);
@@ -102,22 +83,6 @@ public class Scheduler extends Application {
 
     private void initializeLayout()
     {
-        sliderInvestmentDrop = new Slider();
-        sliderInvestmentDrop.setMin(0);
-        sliderInvestmentDrop.setMax(60.0);
-        sliderInvestmentDrop.setPrefWidth(200);
-        sliderInvestmentDrop.valueProperty().addListener(new ChangeListener<Number>() {
-             @Override
-             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                 currencyDropThreshold = -Math.round(newValue.floatValue()*10.0f)/10.0f;
-                 labelCurrentStatus.setText("Investment: " + investment + " €\t\tInvestment Threshold: "
-                         + currencyDropThreshold + "%");
-             }
-         });
-        labelCurrentStatus = new Label("Investment: " + investment + " €\t\tInvestment Threshold: "
-                + currencyDropThreshold + "%");
-        labelCurrentStatus.setFont(new Font("Arial", 16));
-
         //defining the axes
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
@@ -149,8 +114,6 @@ public class Scheduler extends Application {
         changeSeriesColor(lightChart, 2, "#0000FF");
         changeSeriesColor(lightChart, 3, "orange");
 
-        hBoxBottom.getChildren().add(sliderInvestmentDrop);
-        hBoxBottom.getChildren().add(labelCurrentStatus);
         stackPaneCenter.getChildren().add(lightChart);
 
         generateData();
@@ -181,7 +144,7 @@ public class Scheduler extends Application {
                 System.out.println("Time: " + time.format(formatter) + "\tin seconds: " + currentTime);
                 if(phoneAbsence > 24)
                 {
-                    sendDataToServer("SET_LED_RGB:000,000,000");
+                    sendDataToServer("SET_LED_RGB:000,000,000\n");
                 }else
                 {
                     String redString = "";
@@ -212,7 +175,7 @@ public class Scheduler extends Application {
                     else
                         blueString = String.valueOf(blue);
 
-                    sendDataToServer("SET_LED_RGB:" + redString + "," + greenString + "," + blueString);
+                    sendDataToServer("SET_LED_RGB:" + redString + "," + greenString + "," + blueString + "\n");
                 }
             }catch (Exception e)
             {
@@ -228,6 +191,7 @@ public class Scheduler extends Application {
         addDataRGB(0, 0, 0, 0, 0);
         addDataRGB(23, 59, 0, 0, 0);
         addDataRGB(6, 0, 0, 0, 0);
+        addDataRGB(6, 15, 127, 0, 0);
         addDataRGB(6, 30, 255, 64, 0);
         addDataRGB(9,0, 255, 255, 255);
         addDataRGB(19,0, 255, 255, 255);

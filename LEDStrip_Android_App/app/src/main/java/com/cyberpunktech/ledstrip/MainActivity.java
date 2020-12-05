@@ -46,7 +46,7 @@ int red = 0, green = 0, blue = 0;
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendDataToServer(textViewMessage.getText().toString());
+                sendDataToServer(textViewMessage.getText().toString() + "\n");
             }
         });
 
