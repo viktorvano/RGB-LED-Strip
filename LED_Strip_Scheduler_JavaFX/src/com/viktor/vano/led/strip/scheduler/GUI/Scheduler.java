@@ -245,7 +245,7 @@ public class Scheduler extends Application {
         {
             // need host and port, we want to connect to the ServerSocket at port 7777
             Socket socket = new Socket();
-            socket.setSoTimeout(200);
+            socket.setSoTimeout(300);
             socket.connect(new InetSocketAddress("192.168.2.239", 80), 300);
             System.out.println("Connected!");
 
