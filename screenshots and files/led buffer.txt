@@ -1,5 +1,5 @@
 Name : buffer
-	Details:"2,CONNECT\r\n\r\n+IPD,2,25:\0\027SET_LED_RGB:183,102,029\n,CLOSED\r\n", '\0' <repeats 1941 times>
+	Details:"2,CONNECT\r\n\r\n+IPD,2,25:\0\027SET_LED_RGB:183,102,029\n2,CLOSED\r\n", '\0' <repeats 1941 times>
 	Default:0x20000284 <buffer>
 	Decimal:536871556
 	Hex:0x20000284
