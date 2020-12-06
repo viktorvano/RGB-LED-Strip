@@ -15,11 +15,11 @@ You can change your light profile schedule in function generateData().
 If you want to change color of the chart, you can do so by calling function changeSeriesColor(@NotNull LineChart lineChart, int i, @NotNull String color).  
 Example:  
 ```Java
-        changeSeriesColor(lightChart, 0, "#FF0000");
-        changeSeriesColor(lightChart, 1, "#00FF00");
-        changeSeriesColor(lightChart, 2, "#0000FF");
-        changeSeriesColor(lightChart, 3, "orange");
-        sendDataToServer("SET_LED_RGB:" + redString + "," + greenString + "," + blueString + "\n"); // Example of sending a command to STM32/ESP8266 server
+changeSeriesColor(lightChart, 0, "#FF0000"); // Change series 0 to RED color
+changeSeriesColor(lightChart, 1, "#00FF00"); // Change series 1 to GREEN color
+changeSeriesColor(lightChart, 2, "#0000FF"); // Change series 2 to BLUE color
+changeSeriesColor(lightChart, 3, "orange"); // Change series 3 to Orange color
+sendDataToServer("SET_LED_RGB:" + redString + "," + greenString + "," + blueString + "\n"); // Sending a custom RGB command to STM32/ESP8266 server
 ```
   
 Code Snippet:
@@ -59,7 +59,7 @@ Code Snippet:
         {
             // need host and port, we want to connect to the ServerSocket at port 7777
             Socket socket = new Socket();
-            socket.setSoTimeout(200);
+            socket.setSoTimeout(300);
             socket.connect(new InetSocketAddress("192.168.2.239", 80), 300);
             System.out.println("Connected!");
 
