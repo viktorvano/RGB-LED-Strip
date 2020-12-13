@@ -1,6 +1,8 @@
 # RGB-LED-Strip
  STM32 based server for RGB LED strip with ESP8266 + Android App + JavaFX Desktop App  
- 
+Video: https://youtu.be/E3QZ01AMJjs  
+  
+  
 ## Info about ESP8266 12F and IP Addresses  
   
 ###### ESP8266 12F Boot Modes  
