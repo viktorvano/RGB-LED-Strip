@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="LED_Strip_Voice_Control:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/LED_Strip_Voice_Control_jar</output-path>
+    <root id="archive" name="LED_Strip_Voice_Control.jar">
+      <element id="module-output" name="LED_Strip_Voice_Control" />
+    </root>
+  </artifact>
+</component>
