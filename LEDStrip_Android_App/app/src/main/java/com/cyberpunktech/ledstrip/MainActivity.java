@@ -1,6 +1,7 @@
 package com.cyberpunktech.ledstrip;
 
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -25,9 +26,9 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 public class MainActivity extends AppCompatActivity {
-TextView textViewMessage;
-Button buttonSend;
-SeekBar seekBarRed, seekBarGreen, seekBarBlue;
+private TextView textViewMessage;
+private Button buttonSend, buttonColor;
+private SeekBar seekBarRed, seekBarGreen, seekBarBlue;
 int red = 0, green = 0, blue = 0;
 
     @Override
@@ -42,13 +43,10 @@ int red = 0, green = 0, blue = 0;
 
         textViewMessage = findViewById(R.id.textViewMessage);
 
+        buttonColor = findViewById(R.id.buttonColor);
+
         buttonSend = findViewById(R.id.buttonSend);
-        buttonSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendDataToServer(textViewMessage.getText().toString() + "\n");
-            }
-        });
+        buttonSend.setOnClickListener(view -> sendDataToServer(textViewMessage.getText().toString() + "\n"));
 
         seekBarRed = findViewById(R.id.seekBarRed);
         seekBarGreen = findViewById(R.id.seekBarGreen);
@@ -61,6 +59,7 @@ int red = 0, green = 0, blue = 0;
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 red = i;
                 formatStringsForTextView();
+                buttonColor.setBackgroundColor(Color.argb(255, red, green, blue));
             }
 
             @Override
@@ -78,6 +77,7 @@ int red = 0, green = 0, blue = 0;
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 green = i;
                 formatStringsForTextView();
+                buttonColor.setBackgroundColor(Color.argb(255, red, green, blue));
             }
 
             @Override
@@ -95,6 +95,7 @@ int red = 0, green = 0, blue = 0;
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 blue = i;
                 formatStringsForTextView();
+                buttonColor.setBackgroundColor(Color.argb(255, red, green, blue));
             }
 
             @Override
