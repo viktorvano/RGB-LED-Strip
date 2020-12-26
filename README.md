@@ -346,4 +346,111 @@ void USART1_IRQHandler(void)
 ###### Web Browser Screenshot
   
 ![alt text](https://github.com/viktorvano/RGB-LED-Strip/blob/main/screenshots%20and%20files/Screenshot2.png?raw=true)  
+  
+###### LED Strip Voice Control - ScreenShot  
+  
+![alt text](https://github.com/viktorvano/RGB-LED-Strip/blob/main/screenshots%20and%20files/LED%20Strip%20Voice%20Control.png?raw=true)  
 
+###### Code snippet of LED Strip Voice Control  
+  
+Message Parsing:  
+```Java
+    private void parseMessage()
+    {
+        label.setText("PORT: 7777\n" + message);
+        if (message.contains("red") &&
+           (message.contains("color") || message.contains("light") || message.contains("lights")))
+        {
+            sendDataToServer("SET_LED_RGB:255,000,000\n");
+            changePaneColor("FF0000");
+        }else if (message.contains("green") &&
+                (message.contains("color") || message.contains("light") || message.contains("lights")))
+        {
+            sendDataToServer("SET_LED_RGB:000,255,000\n");
+            changePaneColor("00FF00");
+        }else if (message.contains("blue") &&
+                (message.contains("color") || message.contains("light") || message.contains("lights")))
+        {
+            sendDataToServer("SET_LED_RGB:000,000,255\n");
+            changePaneColor("0000FF");
+        }else if ((message.contains("on") || message.contains("white")) &&
+                (message.contains("color") || message.contains("light") || message.contains("lights")))
+        {
+            sendDataToServer("SET_LED_RGB:255,255,255\n");
+            changePaneColor("FFFFFF");
+        }else if (message.contains("off") &&
+                (message.contains("color") || message.contains("light") || message.contains("lights")))
+        {
+            sendDataToServer("SET_LED_RGB:000,000,000\n");
+            changePaneColor("000000");
+        }
+        message = "";
+    }
+```  
+  
+Server Socket:  
+  
+```Java
+    class MyServer extends Thread{
+        private boolean active = true;
+
+        public void setActive(boolean active){
+            this.active = active;
+        }
+
+        @Override
+        public void run() {
+            super.run();
+            ServerSocket ss = null;
+            try {
+                ss = new ServerSocket(7777);
+                ss.setSoTimeout(5000);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (ss == null)
+            {
+                System.exit(-99);
+            }
+            System.out.println("ServerSocket awaiting connections...");
+            Socket socket = null;// = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
+            while (active)
+            {
+                try {
+                    socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
+                    System.out.println("Connection from " + socket + "!");
+
+                    // get the input stream from the connected socket
+                    InputStream inputStream = null;
+                    try {
+                        assert socket != null;
+                        inputStream = socket.getInputStream();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    // create a DataInputStream so we can read data from it.
+                    assert inputStream != null;
+                    DataInputStream dataInputStream = new DataInputStream(inputStream);
+
+                    // read the message from the socket
+                    try {
+                        message = dataInputStream.readUTF();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("Received message:\n" + message + "\n");
+
+                    if(message != null && !message.equals(""))
+                        timeline.play();
+                }catch (SocketTimeoutException e)
+                {
+                    System.out.println("Socket timed out");
+                } catch (Exception e) {
+                    System.out.println("Something went wrong.");
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+```
