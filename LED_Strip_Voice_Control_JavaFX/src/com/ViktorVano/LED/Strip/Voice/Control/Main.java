@@ -60,7 +60,6 @@ public class Main extends Application {
     public void stop() throws Exception {
         super.stop();
         myServer.stopServer();
-        System.out.println("Server will be stopped soon...");
         System.out.println("Closing the application.");
     }
 
