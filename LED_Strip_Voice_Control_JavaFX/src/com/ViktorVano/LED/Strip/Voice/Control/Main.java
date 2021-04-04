@@ -59,7 +59,7 @@ public class Main extends Application {
     @Override
     public void stop() throws Exception {
         super.stop();
-        myServer.setActive(false);
+        myServer.stopServer();
         System.out.println("Server will be stopped soon...");
         System.out.println("Closing the application.");
     }
@@ -137,20 +137,29 @@ public class Main extends Application {
 
     class MyServer extends Thread{
         private boolean active = true;
+        private ServerSocket ss;
 
-        public void setActive(boolean active){
-            this.active = active;
+        public void stopServer()
+        {
+            this.active = false;
+            try {
+                ss.close();
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
         }
 
         @Override
         public void run() {
             super.run();
-            ServerSocket ss = null;
+            ss = null;
             try {
                 ss = new ServerSocket(7777);
-                ss.setSoTimeout(5000);
             } catch (IOException e) {
                 e.printStackTrace();
+                active = false;
             }
 
             if (ss == null)
@@ -195,6 +204,7 @@ public class Main extends Application {
                     e.printStackTrace();
                 }
             }
+            System.out.println("Server stopped successfully.");
         }
     }
 }
