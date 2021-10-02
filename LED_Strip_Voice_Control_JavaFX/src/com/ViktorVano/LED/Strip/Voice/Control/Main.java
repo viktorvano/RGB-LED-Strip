@@ -16,21 +16,26 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
+import static com.ViktorVano.LED.Strip.Voice.Control.StringFile.*;
+
 public class Main extends Application {
     private Pane pane;
     private String message = "";
     private Label label;
     private Timeline timeline;
     private MyServer myServer;
+    public static String targetIP = "192.168.2.102";
 
     @Override
     public void start(Stage stage){
-        final int width = 400;
-        final int height = 300;
+        final int width = 600;
+        final int height = 200;
+
+        targetIP = loadStringFromFile("targetIP.txt", targetIP);
 
         pane = new Pane();
 
-        label = new Label("PORT: 7777");
+        label = new Label("PORT: 7777\nTarget socket: " + targetIP + ":80\nReceived Message: " + message);
         label.setFont(Font.font("Arial", 24));
         label.setStyle("-fx-background-color: #FFFFFF");
         pane.getChildren().add(label);
@@ -74,7 +79,7 @@ public class Main extends Application {
 
     private void parseMessage()
     {
-        label.setText("PORT: 7777\n" + message);
+        label.setText("PORT: 7777\nTarget socket: " + targetIP + ":80\nReceived Message: " + message);
         if (message.contains("red") &&
            (message.contains("color") || message.contains("light") || message.contains("lights")))
         {
@@ -111,7 +116,7 @@ public class Main extends Application {
             // need host and port, we want to connect to the ESP8266 ServerSocket at port 80
             Socket socket = new Socket();
             socket.setSoTimeout(300);
-            socket.connect(new InetSocketAddress("192.168.2.239", 80), 300);
+            socket.connect(new InetSocketAddress(targetIP, 80), 300);
             System.out.println("Connected!");
 
             // get the output stream from the socket.
