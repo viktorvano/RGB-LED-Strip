@@ -184,9 +184,9 @@ private final String DDNS_Address = "example.ddns.net";
         {
             String address = "0.0.0.0";
             if(switchDDNS.isChecked())
-                address = localIP;
-            else
                 address = DDNS_Address;
+            else
+                address = localIP;
             // need host and port, we want to connect to the ServerSocket at port 7777
             Socket socket = new Socket();
             socket.setSoTimeout(800);
