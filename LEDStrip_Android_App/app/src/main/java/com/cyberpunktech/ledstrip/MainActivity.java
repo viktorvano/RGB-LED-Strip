@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.io.DataOutputStream;
@@ -29,7 +30,10 @@ public class MainActivity extends AppCompatActivity {
 private TextView textViewMessage;
 private Button buttonSend, buttonColor;
 private SeekBar seekBarRed, seekBarGreen, seekBarBlue;
-int red = 0, green = 0, blue = 0;
+private Switch switchDDNS;
+private int red = 0, green = 0, blue = 0;
+private final String localIP = "192.168.1.9";
+private final String DDNS_Address = "example.ddns.net";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,8 @@ int red = 0, green = 0, blue = 0;
 
         buttonSend = findViewById(R.id.buttonSend);
         buttonSend.setOnClickListener(view -> sendDataToServer(textViewMessage.getText().toString() + "\n"));
+
+        switchDDNS = findViewById(R.id.switchDDNS);
 
         seekBarRed = findViewById(R.id.seekBarRed);
         seekBarGreen = findViewById(R.id.seekBarGreen);
@@ -176,10 +182,15 @@ int red = 0, green = 0, blue = 0;
     {
         try
         {
+            String address = "0.0.0.0";
+            if(switchDDNS.isChecked())
+                address = localIP;
+            else
+                address = DDNS_Address;
             // need host and port, we want to connect to the ServerSocket at port 7777
             Socket socket = new Socket();
             socket.setSoTimeout(800);
-            socket.connect(new InetSocketAddress("192.168.2.239", 80), 800);
+            socket.connect(new InetSocketAddress(address, 80), 800);
             System.out.println("Connected!");
 
             // get the output stream from the socket.
