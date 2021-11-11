@@ -99,6 +99,12 @@ void messageHandler()
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, green);
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, blue);
 		HAL_UART_Transmit(&huart1, (uint8_t*)"AT+CIPCLOSE=0\r\n", strlen("AT+CIPCLOSE=0\r\n"), 100);
+	}else if(string_contains((char*)buffer, "+CWJAP:", buffer_index) != -1
+			&& (string_contains((char*)buffer, "FAIL", buffer_index) != -1
+			|| string_contains((char*)buffer, "DISCONNECT", buffer_index) != -1))
+	{
+		//Change your WiFi SSID credentials below
+		HAL_UART_Transmit(&huart1, (uint8_t*)"AT+CWJAP=\"WiFiSSID\",\"WiFiPASSWORD\"\r\n", strlen("AT+CWJAP=\"WiFiSSID\",\"WiFiPASSWORD\"\r\n"), 100);
 	}
 	ESP_Clear_Buffer();
 	__HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE);
