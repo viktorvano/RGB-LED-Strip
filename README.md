@@ -119,6 +119,77 @@ Code Snippet:
   
 ###### Android App: LED Strip  
   
+Edit your variables:  
+```Java
+private final int timeout = 1000;
+private final String localIP = "192.168.1.99";
+private final String DDNS_Address = "example.ddns.net";
+private final String token = "fe5g8e2a5f4e85d2e85a7c5";
+private final int localPORT = 80;
+private final int externalPORT = 9999;
+```  
+  
+Code snippets:
+```Java
+	...
+        buttonSend = findViewById(R.id.buttonSend);
+        buttonSend.setOnClickListener(view -> sendDataToServer(textViewMessage.getText().toString() + ";" + token + "\n"));
+	...	
+	
+    private void sendDataToServer(String message)
+    {
+        try
+        {
+            String address = "0.0.0.0";
+            int port = 0;
+            if(switchDDNS.isChecked())
+            {
+                address = DDNS_Address;
+                port = externalPORT;
+            }
+            else
+            {
+                address = localIP;
+                port = localPORT;
+            }
+            // need host and port, we want to connect to the ServerSocket at port 7777
+            Socket socket = new Socket();
+            socket.setSoTimeout(timeout);
+            socket.connect(new InetSocketAddress(address, port), timeout);
+            System.out.println("Connected!");
+
+            // get the output stream from the socket.
+            OutputStream outputStream = socket.getOutputStream();
+            // create a data output stream from the output stream so we can send data through it
+            DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
+
+            System.out.println("Sending string to the ServerSocket");
+
+            // write the message we want to send
+            dataOutputStream.writeUTF(message);
+            dataOutputStream.flush(); // send the message
+            dataOutputStream.close(); // close the output stream when we're done.
+
+            System.out.println("Closing socket.");
+            socket.close();
+        }catch (SocketException e)
+        {
+            e.printStackTrace();
+            Activity activity = this;
+            Toast.makeText(this, "Connection Timeout",
+                    Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            Activity activity = this;
+            Toast.makeText(this, "Connection Exception",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+```
+  
+  
 ![alt text](https://github.com/viktorvano/RGB-LED-Strip/blob/main/screenshots%20and%20files/Screenshot1.png?raw=true)  
 
 ###### STM32 Code Snippets  
