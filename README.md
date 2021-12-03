@@ -121,12 +121,12 @@ Code Snippet:
   
 Edit your variables:  
 ```Java
-private final int timeout = 1000;
-private final String localIP = "192.168.1.99";
-private final String DDNS_Address = "example.ddns.net";
-private final String token = "fe5g8e2a5f4e85d2e85a7c5";
-private final int localPORT = 80;
-private final int externalPORT = 9999;
+private final int timeout = 1000;//connection timeout in milliseconds
+private final String localIP = "192.168.1.99";//custom LAN IP address
+private final String DDNS_Address = "example.ddns.net";//custom DDNS url address
+private final String token = "fe5g8e2a5f4e85d2e85a7c5";//random string and must match with STM32 token
+private final int localPORT = 80;//LAN port
+private final int externalPORT = 9999;//External port for DDNS
 ```  
   
 Code snippets:
