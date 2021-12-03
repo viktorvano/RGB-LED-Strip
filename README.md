@@ -123,6 +123,13 @@ Code Snippet:
 
 ###### STM32 Code Snippets  
 
+--- WiFi Credentials ---  
+Update your WiFi credentials and make a custom random token in ESP8266.h:  
+```C
+#define WiFi_Credentials	"AT+CWJAP=\"WiFiSSID\",\"WiFiPASSWORD\"\r\n"
+#define TOKEN			"fe5g8e2a5f4e85d2e85a7c5"
+```  
+
 Example of what messages STM32 server receives to the buffer[]:
 ```C
 //Receiving a custom RGB command
@@ -181,7 +188,7 @@ void ESP_Server_Init()
 	HAL_Delay(1000);
 	ESP_Clear_Buffer();
 
-	HAL_UART_Transmit(&huart1, (uint8_t*)"AT+CWJAP=\"WiFiSSID\",\"password\"\r\n", strlen("AT+CWJAP=\"WiFiSSID\",\"password\"\r\n"), 100);
+	HAL_UART_Transmit(&huart1, (uint8_t*)WiFi_Credentials, strlen(WiFi_Credentials), 100);
 }
 
 void ESP_Clear_Buffer()
@@ -228,7 +235,8 @@ void messageHandler()
 		HAL_Delay(300);
 		HAL_UART_Transmit(&huart1, (uint8_t*)"AT+CIPCLOSE=0\r\n", strlen("AT+CIPCLOSE=0\r\n"), 100);
 		HAL_Delay(300);
-	}else if((position = string_contains((char*)buffer, "SET_LED_RGB:", buffer_index)) != -1)
+	}else if((position = string_contains((char*)buffer, "SET_LED_RGB:", buffer_index)) != -1
+			&& string_contains((char*)buffer, TOKEN, buffer_index) != -1)
 	{
 		uint8_t red, green, blue;
 		red = atoi((char*)&buffer[position + 12]);
@@ -238,6 +246,11 @@ void messageHandler()
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, green);
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, blue);
 		HAL_UART_Transmit(&huart1, (uint8_t*)"AT+CIPCLOSE=0\r\n", strlen("AT+CIPCLOSE=0\r\n"), 100);
+	}else if(string_contains((char*)buffer, "+CWJAP:", buffer_index) != -1
+			&& (string_contains((char*)buffer, "FAIL", buffer_index) != -1
+			|| string_contains((char*)buffer, "DISCONNECT", buffer_index) != -1))
+	{
+		HAL_UART_Transmit(&huart1, (uint8_t*)WiFi_Credentials, strlen(WiFi_Credentials), 100);
 	}
 	ESP_Clear_Buffer();
 	__HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE);
