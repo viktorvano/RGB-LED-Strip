@@ -13,6 +13,9 @@
 #include "main.h"
 #include "core_cm3.h"
 
+#define WiFi_Credentials	"AT+CWJAP=\"WiFiSSID\",\"WiFiPASSWORD\"\r\n"
+#define TOKEN				"fe5g8e2a5f4e85d2e85a7c5"
+
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
 extern UART_HandleTypeDef huart1;

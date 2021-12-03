@@ -1,5 +1,6 @@
 package com.cyberpunktech.ledstrip;
 
+import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -20,11 +21,14 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.DataOutputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.concurrent.TimeoutException;
 
 public class MainActivity extends AppCompatActivity {
 private TextView textViewMessage;
@@ -32,8 +36,12 @@ private Button buttonSend, buttonColor;
 private SeekBar seekBarRed, seekBarGreen, seekBarBlue;
 private Switch switchDDNS;
 private int red = 0, green = 0, blue = 0;
-private final String localIP = "192.168.1.9";
+private final int timeout = 1000;
+private final String localIP = "192.168.1.99";
 private final String DDNS_Address = "example.ddns.net";
+private final String token = "fe5g8e2a5f4e85d2e85a7c5";
+private final int localPORT = 80;
+private final int externalPORT = 9999;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +58,8 @@ private final String DDNS_Address = "example.ddns.net";
         buttonColor = findViewById(R.id.buttonColor);
 
         buttonSend = findViewById(R.id.buttonSend);
-        buttonSend.setOnClickListener(view -> sendDataToServer(textViewMessage.getText().toString() + "\n"));
+        buttonSend.setOnClickListener(view ->
+                sendDataToServer(textViewMessage.getText().toString() + ";" + token + "\n"));
 
         switchDDNS = findViewById(R.id.switchDDNS);
 
@@ -183,14 +192,21 @@ private final String DDNS_Address = "example.ddns.net";
         try
         {
             String address = "0.0.0.0";
+            int port = 0;
             if(switchDDNS.isChecked())
+            {
                 address = DDNS_Address;
+                port = externalPORT;
+            }
             else
+            {
                 address = localIP;
+                port = localPORT;
+            }
             // need host and port, we want to connect to the ServerSocket at port 7777
             Socket socket = new Socket();
-            socket.setSoTimeout(800);
-            socket.connect(new InetSocketAddress(address, 80), 800);
+            socket.setSoTimeout(timeout);
+            socket.connect(new InetSocketAddress(address, port), timeout);
             System.out.println("Connected!");
 
             // get the output stream from the socket.
@@ -207,9 +223,19 @@ private final String DDNS_Address = "example.ddns.net";
 
             System.out.println("Closing socket.");
             socket.close();
-        }catch (Exception e)
+        }catch (SocketException e)
         {
             e.printStackTrace();
+            Activity activity = this;
+            Toast.makeText(this, "Connection Timeout",
+                    Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            Activity activity = this;
+            Toast.makeText(this, "Connection Exception",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 }
