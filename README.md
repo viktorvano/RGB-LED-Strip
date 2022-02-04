@@ -190,7 +190,7 @@ Code snippets:
 ```
   
   
-<img src="https://github.com/viktorvano/RGB-LED-Strip/blob/main/screenshots%20and%20files/Screenshot1.png" width="200"/>  
+<img src="https://github.com/viktorvano/RGB-LED-Strip/blob/main/screenshots%20and%20files/Screenshot1.png" width="500"/>  
   
 ## DDNS  
   
