@@ -191,6 +191,23 @@ Code snippets:
   
   
 ![alt text](https://github.com/viktorvano/RGB-LED-Strip/blob/main/screenshots%20and%20files/Screenshot1.png?raw=true)  
+  
+## DDNS  
+  
+Use a DDNS service such as No-IP to create a hostname
+![alt text](https://github.com/viktorvano/STM32-IoT-Humdity-Sensor/blob/main/documents/noip.png?raw=true)   
+  
+Add DDNS credentials to your router  
+![alt text](https://github.com/viktorvano/STM32-IoT-Humdity-Sensor/blob/main/documents/DDNS.png?raw=true)   
+  
+Reserve IP address of your IoT device (make it static, so it won't change over time)  
+![alt text](https://github.com/viktorvano/STM32-IoT-Humdity-Sensor/blob/main/documents/static-device-IP.png?raw=true)   
+  
+Setup a port forwarding rule for the LED Strip (IoT Humidity as an example)  
+![alt text](https://github.com/viktorvano/STM32-IoT-Humdity-Sensor/blob/main/documents/port-forwarding.png?raw=true)   
+  
+Now you can control the LED Strip from anywhere.  
+  
 
 ###### STM32 Code Snippets  
 
