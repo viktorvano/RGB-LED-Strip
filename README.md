@@ -33,7 +33,7 @@ changeSeriesColor(lightChart, 0, "#FF0000"); // Change series 0 to RED color
 changeSeriesColor(lightChart, 1, "#00FF00"); // Change series 1 to GREEN color
 changeSeriesColor(lightChart, 2, "#0000FF"); // Change series 2 to BLUE color
 changeSeriesColor(lightChart, 3, "orange"); // Change series 3 to Orange color
-sendDataToServer("SET_LED_RGB:" + redString + "," + greenString + "," + blueString + "\n"); // Sending a custom RGB command to STM32/ESP8266 server
+sendDataToServer("SET_LED_RGB:" + redString + "," + greenString + "," + blueString + ";" + tokenString + "\n"); // Sending a custom RGB command to STM32/ESP8266 server
 ```
   
 Code Snippet:
@@ -127,6 +127,7 @@ private final String DDNS_Address = "example.ddns.net";//custom DDNS url address
 private final String token = "fe5g8e2a5f4e85d2e85a7c5";//random string and must match with STM32 token
 private final int localPORT = 80;//LAN port
 private final int externalPORT = 9999;//External port for DDNS
+//Protocol format: COMMAND + ";" + TOKEN + "\n"
 ```  
   
 Code snippets:
@@ -216,6 +217,7 @@ Update your WiFi credentials and make a custom random token in ESP8266.h:
 ```C
 #define WiFi_Credentials	"AT+CWJAP=\"WiFiSSID\",\"WiFiPASSWORD\"\r\n"
 #define TOKEN			"fe5g8e2a5f4e85d2e85a7c5"
+//Protocol format: COMMAND + ";" + TOKEN + "\n"
 ```  
 
 Example of what messages STM32 server receives to the buffer[]:
